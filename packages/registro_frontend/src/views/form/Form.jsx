@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom'
 import StatusInfo from '../../components/StatusInfo/StatusInfo'
 
 export default function Form () {
-  const [status, setStatus] = useState('')
+  const [statusInfo, setstatusInfo] = useState('')
   const [form, setForm] = useState({
     marca: '',
     modelo: '',
@@ -27,13 +27,13 @@ export default function Form () {
   }
 
   const handleClick = () => {
-    setStatus(form)
+    setstatusInfo(form)
   }
 
   return (
     <>
       {
-        status === 'OK'
+        statusInfo === 'OK'
           ? (
           <StatusInfo status={status} />
             )
