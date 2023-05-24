@@ -24,7 +24,7 @@ export default function Vehículos () {
 
   return (
     <Card>
-      <Title className='flex justify-between'>Registro de vehículos <Link className='text-sm bg-green-200 p-2 rounded-md hover:bg-green-500 hover:text-white hover:scale-110 transition duration-150 ease-in-out' to='/registro/vehiculo'>Agregar +</Link></Title>
+      <Title className='flex justify-between'>Registro de vehículos <Link className='text-sm bg-green-200 p-2 rounded-md hover:bg-green-500 hover:text-white hover:scale-110 transition duration-150 ease-in-out' to='/registrar_vehiculo'>Agregar +</Link></Title>
       <Table className="mt-5">
         <TableHead>
           <TableRow>
