@@ -1,7 +1,9 @@
 import { Card } from '@tremor/react'
-import Info from './components/Info'
 import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
+import Info from './components/Info'
+import TableVehiculo from './components/Table-info'
+import TitleInfo from './components/TitleInfo'
 
 export default function Vehiculo () {
   const [vehiculo, setVehiculo] = useState({})
@@ -16,11 +18,12 @@ export default function Vehiculo () {
   }, [id])
 
   return (
-    <main>
+    <main className='p-24'>
       <Card>
-      <div className='grid gap-4 grid-flow-col p-10'>
+        <TitleInfo vehiculo={vehiculo} />
+        <div className='grid gap-4 grid-flow-col p-10'>
           <Info vehiculo={vehiculo} />
-          {/* <TableVehiculo /> */}
+          <TableVehiculo />
         </div>
       </Card>
     </main>
