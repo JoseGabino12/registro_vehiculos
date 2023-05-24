@@ -1,12 +1,12 @@
 'use client'
-import { TextInput } from '@tremor/react';
-import { IoIosArrowRoundBack } from 'react-icons/io';
-import { BsSendFill } from 'react-icons/bs';
+import { TextInput } from '@tremor/react'
+import { IoIosArrowRoundBack } from 'react-icons/io'
+import { BsSendFill } from 'react-icons/bs'
 
 import { useState } from 'react'
 
 import { Link } from 'react-router-dom'
-import StatusInfo from './components/Status'
+import StatusInfo from '../../components/StatusInfo/StatusInfo'
 
 export default function Form () {
   const [status, setStatus] = useState('')
