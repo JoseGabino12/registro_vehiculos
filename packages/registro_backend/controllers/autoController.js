@@ -8,7 +8,7 @@ const obtenerAutos = async (req, res) => {
 };
 
 const agregarAuto = async (req, res) => {
-    const {marca, anio, modelo, empresa, numeconomico} = req.body;
+    const {marca, anio, modelo, empresa, numeconomico, imagen} = req.body;
     console.log(req.body);
 
     try {
@@ -18,7 +18,8 @@ const agregarAuto = async (req, res) => {
                 anio,
                 modelo,
                 empresa,
-                numeconomico
+                numeconomico,
+                imagen
             }
         })
 

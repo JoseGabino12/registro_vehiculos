@@ -1,4 +1,3 @@
-'use client'
 import {
   Card,
   Table,
@@ -8,12 +7,25 @@ import {
   TableBody,
   TableCell,
   Text,
-  Title,
-  Badge
+  Title
 } from '@tremor/react'
 import Link from 'next/link'
 
-export default function Vehículos () {
+export const getServerSideProps = async () => {
+  const res = await fetch('http://localhost:4000/api/auto')
+  const data = await res.json()
+
+  console.log('desde server', res)
+
+  return {
+    props: {
+      data
+    }
+  }
+}
+
+export default function Vehículos ({ data }) {
+  console.log(data)
   return (
     <Card>
       <Title className='flex justify-between'>Registro de vehículos <Link href='/registro/vehiculo' className='text-sm bg-green-200 p-2 rounded-md hover:bg-green-500 hover:text-white hover:scale-110 transition duration-150 ease-in-out'>Agregar +</Link></Title>
@@ -29,33 +41,30 @@ export default function Vehículos () {
           </TableRow>
         </TableHead>
         <TableBody>
-            <TableRow>
-              <TableCell>Toyota</TableCell>
-              <TableCell>
-                <Text>Hola</Text>
-              </TableCell>
-              <TableCell>
-                <Text>Hola2</Text>
-              </TableCell>
-              <TableCell>
-                <Text>Hola2</Text>
-              </TableCell>
-              <TableCell>
-                <Text>Hola2</Text>
-              </TableCell>
-              <TableCell>
-                <Badge color="emerald">
-                  hola
-                </Badge>
-              </TableCell>
-              <TableCell>
-                <Link href='/vehiculos/2'>
-                  <p className='opacity-25 hover:opacity-100 transition duration-150 ease-in-out'>
-                    Ver más...
-                  </p>
-                </Link>
-              </TableCell>
-            </TableRow>
+            {/* {
+              vehiculos.map((vehiculo) => (
+                <TableRow key={vehiculo.id}>
+                  <TableCell>
+                    <img src={vehiculo.imagen} alt={vehiculo.marca} className='w-20 h-20 rounded-md' />
+                  </TableCell>
+                  <TableCell>
+                    <Text>{vehiculo.marca}</Text>
+                  </TableCell>
+                  <TableCell>
+                    <Text>{vehiculo.modelo}</Text>
+                  </TableCell>
+                  <TableCell>
+                    <Text>{vehiculo.anio}</Text>
+                  </TableCell>
+                  <TableCell>
+                    <Text>{vehiculo.empresa}</Text>
+                  </TableCell>
+                  <TableCell>
+                    <Text>{vehiculo.numeconomico}</Text>
+                  </TableCell>
+                </TableRow>
+              ))
+            } */}
         </TableBody>
       </Table>
     </Card>
