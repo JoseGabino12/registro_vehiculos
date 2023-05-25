@@ -8,6 +8,7 @@ const agregarSalida = async (req, res) => {
     let autoId = Number(id);
     const fecha = String(Date.now());
 
+    console.log(idEntrada)
     try {
         const entrada = await prisma.entrada.findFirst({
             where: {
