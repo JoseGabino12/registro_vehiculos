@@ -4,7 +4,6 @@ const prisma = new PrismaClient();
 
 const agregarEntrada = async (req, res) => {
     const { autoId} = req.body;
-
     const fecha = String(Date.now());
 
     try {

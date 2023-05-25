@@ -3,8 +3,21 @@ import { useEffect, useState } from 'react'
 
 export default function Info ({ vehiculo }) {
   const [entrada, setEntrada] = useState(null)
+  const [salida, setSalida] = useState(null)
 
   const handleEntrada = async () => {
+    await fetch(`http://localhost:4000/api/entrada/${vehiculo.id}`, {
+      method: 'POST',
+      body: JSON.stringify(vehiculo.id),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        vehiculo.status ? setSalida(data.fecha) : setEntrada(data.fecha)
+      })
+
     await fetch(`http://localhost:4000/api/auto/${vehiculo.id}`, {
       method: 'PUT'
     })
