@@ -20,7 +20,7 @@ export default function Vehículos () {
     fetch('http://localhost:4000/api/auto')
       .then((response) => response.json())
       .then((data) => setVehiculos(data))
-  }, [vehiculos])
+  }, [])
 
   return (
     <Card>
