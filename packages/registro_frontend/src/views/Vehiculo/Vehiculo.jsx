@@ -7,7 +7,8 @@ import TitleInfo from './components/TitleInfo'
 
 export default function Vehiculo () {
   const [vehiculo, setVehiculo] = useState({})
-  const [entradaSalida, setEntradaSalida] = useState([{}])
+  const [dataEntrada, setDataEntrada] = useState([])
+  const [dataSalida, setDataSalida] = useState([])
   const [loading, setLoading] = useState(true)
   const { id } = useParams()
 
@@ -20,13 +21,22 @@ export default function Vehiculo () {
   }, [id])
 
   useEffect(() => {
-    fetch(`http://localhost:4000/api/entrada/${id}`)
-      .then((response) => response.json())
-      .then((data) => {
-        setEntradaSalida(data)
-        setLoading(false)
-      })
+    async function fetching () {
+      await fetch(`http://localhost:4000/api/entrada/${id}`)
+        .then((response) => response.json())
+        .then((data) => {
+          const { io } = data
+          setDataEntrada(io[0].entradas)
+          setDataSalida(io[1].salidas)
+
+          setLoading(false)
+        })
+    }
+
+    fetching()
   }, [id])
+
+  console.log(dataEntrada, dataSalida)
 
   return (
     <main className='p-24'>
@@ -34,7 +44,12 @@ export default function Vehiculo () {
         <TitleInfo vehiculo={vehiculo} />
         <div className='grid gap-4 grid-flow-col p-10'>
           <Info vehiculo={vehiculo} />
-          <TableVehiculo loading={loading} entradaSalida={entradaSalida} />
+
+          {
+            loading
+              ? <h1>Cargando...</h1>
+              : <TableVehiculo loading={loading} entrada={dataEntrada} salida={dataSalida} />
+          }
         </div>
       </Card>
     </main>

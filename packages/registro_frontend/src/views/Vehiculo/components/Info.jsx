@@ -3,15 +3,14 @@ import { useEffect, useState } from 'react'
 
 export default function Info ({ vehiculo }) {
   const [statusVehiculo, setStatusVehiculo] = useState(null)
-  const [idEntrada, setIdEntrada] = useState(null)
-  console.log(vehiculo.status)
 
   const handleEntrada = async () => {
     console.log(statusVehiculo)
     if (statusVehiculo) {
+      const idE = Number(localStorage.getItem('idEntrada'))
       await fetch(`http://localhost:4000/api/salida/${vehiculo.id}`, {
         method: 'POST',
-        body: JSON.stringify({ autoId: vehiculo.id, idEntrada }),
+        body: JSON.stringify({ autoId: vehiculo.id, idEntrada: idE }),
         headers: {
           'Content-Type': 'application/json'
         }
@@ -31,8 +30,7 @@ export default function Info ({ vehiculo }) {
       })
         .then((response) => response.json())
         .then((data) => {
-          console.log(data)
-          setIdEntrada(data.id)
+          localStorage.setItem('idEntrada', data.id)
         })
     }
 
