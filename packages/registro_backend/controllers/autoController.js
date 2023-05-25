@@ -45,11 +45,13 @@ const obtenerAuto = async (req, res) => {
     }
 }
 
-const actualizarAuto = async (req, res) => {
+const actualizarStatusAuto = async (req, res) => {
     const { id } = req.params;
-    const auto = await prisma.auto.findUnique({
+    let idAuto = Number(id);
+
+    let auto = await prisma.auto.findUnique({
         where:{
-            id
+            id: idAuto
         }
     })
 
@@ -59,14 +61,20 @@ const actualizarAuto = async (req, res) => {
     }
 
     try {
-        const {name, description, stock, category, costPrice, salePrice, image} = req.body;
+        let { status } = auto;
+
+        if(status === false ) {
+            status = true
+        } else {
+            status = false
+        }
 
         const autoActualizado = await prisma.auto.update({
             where: {
-                id
+                id: idAuto
             },
             data: {
-                marca: "Chevrolet"
+                status
             }
         })
 
@@ -79,9 +87,10 @@ const actualizarAuto = async (req, res) => {
 
 const eliminarAuto = async (req, res) => {
     const { id } = req.params;
+    const autoId = Number(id);
     const auto = await prisma.auto.findUnique({
         where:{
-            id
+            id: autoId
         }
     })
 
@@ -93,7 +102,7 @@ const eliminarAuto = async (req, res) => {
     try {
         const autoEliminado = await prisma.auto.delete({
             where: {
-                id:id
+                id: autoId
             }
         })
         res.json(autoEliminado);
@@ -106,5 +115,7 @@ const eliminarAuto = async (req, res) => {
 export {
     obtenerAutos,
     agregarAuto,
-    obtenerAuto
+    obtenerAuto,
+    eliminarAuto,
+    actualizarStatusAuto
 }
