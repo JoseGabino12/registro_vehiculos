@@ -2,33 +2,51 @@ import { Text } from '@tremor/react'
 import { useEffect, useState } from 'react'
 
 export default function Info ({ vehiculo }) {
-  const [entrada, setEntrada] = useState(null)
-  const [salida, setSalida] = useState(null)
+  const [statusVehiculo, setStatusVehiculo] = useState(null)
+  const [idEntrada, setIdEntrada] = useState(null)
+  console.log(vehiculo.status)
 
   const handleEntrada = async () => {
-    await fetch(`http://localhost:4000/api/entrada/${vehiculo.id}`, {
-      method: 'POST',
-      body: JSON.stringify(vehiculo.id),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        vehiculo.status ? setSalida(data.fecha) : setEntrada(data.fecha)
+    console.log(statusVehiculo)
+    if (statusVehiculo) {
+      await fetch(`http://localhost:4000/api/salida/${vehiculo.id}`, {
+        method: 'POST',
+        body: JSON.stringify({ autoId: vehiculo.id, idEntrada }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
       })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data)
+          // vehiculo.status ? setSalida(data.fecha) : setEntrada(data.fecha)
+        })
+    } else {
+      await fetch(`http://localhost:4000/api/entrada/${vehiculo.id}`, {
+        method: 'POST',
+        body: JSON.stringify({ autoId: vehiculo.id }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data)
+          setIdEntrada(data.id)
+        })
+    }
 
     await fetch(`http://localhost:4000/api/auto/${vehiculo.id}`, {
       method: 'PUT'
     })
       .then((response) => response.json())
       .then((data) => {
-        setEntrada(data.status)
+        setStatusVehiculo(data.status)
       })
   }
 
   useEffect(() => {
-    setEntrada(vehiculo.status)
+    setStatusVehiculo(vehiculo.status)
   }, [vehiculo.status])
 
   return (
@@ -51,8 +69,8 @@ export default function Info ({ vehiculo }) {
           <strong>Número económico:</strong> {vehiculo.numeconomico}
         </Text>
       <div className='flex flex-col'>
-        <button className={entrada ? 'bg-green-600 text-white rounded-lg p-2' : 'bg-red-600 text-white rounded-lg p-2'} onClick={handleEntrada}>
-          {entrada ? 'Agregar entrada' : 'Agregar salida'}
+        <button className={statusVehiculo ? 'bg-red-600 text-white rounded-lg p-2' : 'bg-green-600 text-white rounded-lg p-2'} onClick={handleEntrada}>
+          {statusVehiculo ? 'Agregar salida' : 'Agregar entrada'}
         </button>
       </div>
       </div>

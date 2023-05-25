@@ -18,18 +18,36 @@ export default function TableVehiculo ({ loading, entradaSalida }) {
     if (!loading) {
       const entradas = io[0].entradas
       const salidas = io[1].salidas
+      const data = entradas.map(entradaItem => {
+        const salidaItem = salidas.find(salidaItem => salidaItem.entradaId === entradaItem.id)
 
-      if (entradas === null || salidas === null) return
+        if (salidaItem !== undefined) {
+          console.log(salidaItem)
+          console.log(entradaItem)
+          const fechaE = new Date(Number(entradaItem.fecha))
+          const horaE = fechaE.toUTCString()
+          const fechaS = new Date(Number(salidaItem.fecha))
+          const horaS = fechaS.toUTCString()
+          return {
+            id: entradaItem.id,
+            fechaEntrada: horaE,
+            fechaSalida: salidaItem ? horaS : null,
+            autoId: entradaItem.autoId
+          }
+        } else {
+          const fechaE = new Date(Number(entradaItem.fecha))
+          const horaE = fechaE.toUTCString()
 
-      const fechaE = new Date(Number(entradas.fecha))
-      const horaE = fechaE.toUTCString()
-      const fechaS = new Date(Number(salidas.fecha))
-      const horaS = fechaS.toUTCString()
-
-      setEntrada(horaE)
-      setSalida(horaS)
+          return {
+            id: entradaItem.id,
+            fechaEntrada: horaE,
+            fechaSalida: null,
+            autoId: entradaItem.autoId
+          }
+        }
+      })
     }
-  }, [loading, io, entradaSalida])
+  }, [loading, io])
 
   return (
     <>

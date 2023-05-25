@@ -9,17 +9,35 @@ import {
 } from '@tremor/react'
 
 export default function TableInfo ({ entrada, salida }) {
-  const data = entrada.entradas.map(entradaItem => {
-    const salidaItem = salida.salidas.find(salidaItem => salidaItem.entradaId === entradaItem.id)
-    const fechaE = new Date(Number(entradaItem.fecha))
-    const horaE = fechaE.toUTCString()
-    const fechaS = new Date(Number(salidaItem.fecha))
-    const horaS = fechaS.toUTCString()
-    return {
-      id: entradaItem.id,
-      fechaEntrada: horaE,
-      fechaSalida: salidaItem ? horaS : null,
-      autoId: entradaItem.autoId
+  const { entradas } = entrada
+  const { salidas } = salida
+  console.log(entradas, salidas)
+  const data = entradas.map(entradaItem => {
+    const salidaItem = salidas.find(salidaItem => salidaItem.entradaId === entradaItem.id)
+
+    if (salidaItem !== undefined) {
+      console.log(salidaItem)
+      console.log(entradaItem)
+      const fechaE = new Date(Number(entradaItem.fecha))
+      const horaE = fechaE.toUTCString()
+      const fechaS = new Date(Number(salidaItem.fecha))
+      const horaS = fechaS.toUTCString()
+      return {
+        id: entradaItem.id,
+        fechaEntrada: horaE,
+        fechaSalida: salidaItem ? horaS : null,
+        autoId: entradaItem.autoId
+      }
+    } else {
+      const fechaE = new Date(Number(entradaItem.fecha))
+      const horaE = fechaE.toUTCString()
+
+      return {
+        id: entradaItem.id,
+        fechaEntrada: horaE,
+        fechaSalida: null,
+        autoId: entradaItem.autoId
+      }
     }
   })
 

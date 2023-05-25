@@ -26,7 +26,7 @@ export default function Vehiculo () {
         setEntradaSalida(data)
         setLoading(false)
       })
-  }, [id, entradaSalida])
+  }, [id])
 
   return (
     <main className='p-24'>

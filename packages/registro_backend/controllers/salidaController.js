@@ -4,13 +4,14 @@ const prisma = new PrismaClient();
 
 const agregarSalida = async (req, res) => {
     const { id } = req.params;
+    const { idEntrada } = req.body;
     let autoId = Number(id);
     const fecha = String(Date.now());
 
     try {
         const entrada = await prisma.entrada.findFirst({
             where: {
-                autoId
+                id: idEntrada
             }
         })
 
@@ -39,17 +40,25 @@ const obtenerSalidas = async (req, res) => {
 
 const obtenerSalida = async (req, res) => {
     const { id } = req.params;
+    const autoId = Number(id);
 
     const salida = await prisma.salida.findUnique({
         where:{
-            id
+            id: autoId
         }
     })
     res.json(salida);
 }
 
+const eliminarSalidas = async (req, res) => {
+    const salidas = await prisma.salida.deleteMany({});
+
+    res.json(salidas);
+}
+
 export {
     agregarSalida,
     obtenerSalidas,
-    obtenerSalida
+    obtenerSalida,
+    eliminarSalidas
 }

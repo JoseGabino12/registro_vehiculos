@@ -14,16 +14,16 @@ const AllEntradasSalidas = async (req, res) => {
 
 const allEntradasSalidasById = async (req, res) => {
   const { id } = req.params;
-  const idNumber = parseInt(id);
+  const idNumber = Number(id);
 
-  const entradas = await prisma.entrada.findUnique({
+  const entradas = await prisma.entrada.findMany({
       where:{
-          id: idNumber
+          autoId: idNumber
       }
   })
-  const salidas = await prisma.salida.findUnique({
+  const salidas = await prisma.salida.findMany({
       where:{
-          id: idNumber
+          autoId: idNumber
       }
   })
 
