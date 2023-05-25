@@ -12,9 +12,9 @@ export default function TableInfo ({ entrada, salida }) {
   const data = entrada.entradas.map(entradaItem => {
     const salidaItem = salida.salidas.find(salidaItem => salidaItem.entradaId === entradaItem.id)
     const fechaE = new Date(Number(entradaItem.fecha))
-    const horaE = fechaE.getHours()
+    const horaE = fechaE.toUTCString()
     const fechaS = new Date(Number(salidaItem.fecha))
-    const horaS = fechaS.getHours()
+    const horaS = fechaS.toUTCString()
     return {
       id: entradaItem.id,
       fechaEntrada: horaE,

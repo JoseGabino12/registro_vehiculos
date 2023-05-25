@@ -8,6 +8,8 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 
 export default function Form () {
+  const [msgError, setMsgError] = useState('')
+  const [success, setSuccess] = useState(false)
   const [form, setForm] = useState({
     marca: '',
     modelo: '',
@@ -26,6 +28,10 @@ export default function Form () {
 
   const handleSubmit = async e => {
     e.preventDefault()
+    if (form.marca === '' || form.modelo === '' || form.anio === '' || form.empresa === '' || form.numeconomico === '' || form.imagen === '') {
+      setMsgError('Todos los campos son obligatorios')
+      return
+    }
 
     try {
       const respuesta = await fetch('http://localhost:4000/api/auto/', {
@@ -37,14 +43,26 @@ export default function Form () {
       })
 
       await respuesta.json()
-    } catch (error) {
-      console.log(error)
+
+      setSuccess(true)
+    } catch (e) {
+      console.log(e)
+      setMsgError('Error al enviar el formulario')
     }
   }
 
   return (
-    <>
-      <section className="w-1/2 p-9 flex flex-col gap-5 rounded-lg border-2 shadow-lg">
+    <main className='p-24 flex justify-center items-center'>
+          <section className="w-1/2 p-9 flex flex-col gap-5 rounded-lg border-2 shadow-lg">
+          {
+            success
+              ? <section className='flex flex-row gap-2 items-center justify-center'>
+                  <h1 className='text-3xl text-green-500'>Registro exitoso</h1>
+                </section>
+              : <section className='flex flex-row gap-2 items-center justify-center'>
+                  <h1 className='text-3xl text-red-500'>{msgError}</h1>
+                </section>
+          }
         <div className='flex flex-row mb-7 items-center justify-between'>
           <Link to='/'>
             <IoIosArrowRoundBack className='text-5xl hover:scale-110 hover:cursor-pointer' />
@@ -74,6 +92,6 @@ export default function Form () {
           <TextInput id="imagen" onChange={handleChange} className='font-normal text-black' placeholder='https://www.mazda.mx/mazda3.png' />
         </div>
       </section>
-    </>
+    </main>
   )
 }

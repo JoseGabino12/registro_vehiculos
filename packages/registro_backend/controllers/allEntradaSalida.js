@@ -16,7 +16,7 @@ const allEntradasSalidasById = async (req, res) => {
   const { id } = req.params;
   const idNumber = parseInt(id);
 
-  const entradas = await prisma.salida.findUnique({
+  const entradas = await prisma.entrada.findUnique({
       where:{
           id: idNumber
       }

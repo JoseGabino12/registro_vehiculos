@@ -1,13 +1,8 @@
 import { Text } from '@tremor/react'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 export default function Info ({ vehiculo }) {
   const [entrada, setEntrada] = useState(false)
-
-  useEffect(() => {
-    localStorage.setItem('entrada', entrada)
-    setEntrada(localStorage.getItem('entrada'))
-  }, [entrada])
 
   const handleEntrada = () => {
     setEntrada(!entrada)

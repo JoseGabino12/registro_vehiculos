@@ -19,19 +19,20 @@ export default function TableVehiculo ({ loading, entradaSalida }) {
       const entradas = io[0].entradas
       const salidas = io[1].salidas
 
+      if (entradas === null || salidas === null) return
+
       const fechaE = new Date(Number(entradas.fecha))
-      const horaE = fechaE.getHours()
+      const horaE = fechaE.toUTCString()
       const fechaS = new Date(Number(salidas.fecha))
-      const horaS = fechaS.getHours()
+      const horaS = fechaS.toUTCString()
 
       setEntrada(horaE)
       setSalida(horaS)
     }
-  }, [loading, io])
+  }, [loading, io, entradaSalida])
 
   return (
     <>
-      !loading &&
     <Table>
       <TableHead>
         <TableRow>
@@ -43,12 +44,16 @@ export default function TableVehiculo ({ loading, entradaSalida }) {
           <TableRow>
             <TableCell>
               <Badge color="emerald">
-                {salida}
+                {
+                  salida === undefined ? 'No hay registros' : salida
+                }
               </Badge>
             </TableCell>
             <TableCell>
               <Badge color="emerald">
-                {entrada}
+                {
+                  entrada === undefined ? 'No hay registros' : entrada
+                }
               </Badge>
             </TableCell>
           </TableRow>
