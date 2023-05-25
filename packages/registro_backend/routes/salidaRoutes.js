@@ -4,14 +4,15 @@ const router = express.Router();
 import {
     obtenerSalida,
     obtenerSalidas,
-    agregarSalida
+    agregarSalida,
+    eliminarSalidas
 } from "../controllers/salidaController.js";
 
 
-//Entrada
-router.route("/").get(obtenerSalidas);
+//Salida
+router.route("/").get(obtenerSalidas).delete(eliminarSalidas);
 
-// Entrada en especifico
+//Salida en especifico
 router.route("/:id").get(obtenerSalida).post(agregarSalida);
 
 

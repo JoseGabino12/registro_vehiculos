@@ -4,7 +4,6 @@ const prisma = new PrismaClient();
 
 const agregarEntrada = async (req, res) => {
     const { autoId} = req.body;
-
     const fecha = String(Date.now());
 
     try {
@@ -29,17 +28,29 @@ const obtenerEntradas = async (req, res) => {
 
 const obtenerEntrada = async (req, res) => {
     const { id } = req.params;
+    const autoId = Number(id);
 
     const entrada = await prisma.entrada.findUnique({
         where:{
-            autoId: id
+            autoId: autoId
         }
     })
     res.json(entrada);
 }
 
+const eliminarEntrada = async (req, res) => {
+
+    try {
+        const entradas = await prisma.entrada.deleteMany({});
+        res.json(entradas);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 export {
     agregarEntrada,
     obtenerEntradas,
-    obtenerEntrada
+    obtenerEntrada,
+    eliminarEntrada
 }

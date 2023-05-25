@@ -1,18 +1,15 @@
 import express from "express";
 const router = express.Router();
 
-import {
-    obtenerEntrada,
-    obtenerEntradas,
-    agregarEntrada
-} from "../controllers/entradaController.js";
+import { agregarEntrada, eliminarEntrada } from "../controllers/entradaController.js";
+import { AllEntradasSalidas, allEntradasSalidasById } from "../controllers/allEntradaSalida.js";
 
 
 //Entrada
-router.route("/").get(obtenerEntradas).post(agregarEntrada);
+router.route("/").get(AllEntradasSalidas).post(agregarEntrada).delete(eliminarEntrada);
 
 // Entrada en especifico
-router.route("/:id").get(obtenerEntrada);
+router.route("/:id").get(allEntradasSalidasById).post(agregarEntrada);
 
 
 export default router;

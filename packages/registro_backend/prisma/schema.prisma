@@ -18,6 +18,7 @@ model Auto {
   empresa      String
   numeconomico String
   imagen       String
+  status       Boolean   @default(false)
   Entrada      Entrada[]
   Salida       Salida[]
 }
