@@ -2,49 +2,58 @@ import {PrismaClient} from "@prisma/client";
 const prisma = new PrismaClient();
 
 
-const agregarEntrada = async (req, res) => {
+const agregarEntrada = async (req, res, next) => {
     const { autoId} = req.body;
     const fecha = String(Date.now());
 
     try {
-        const nuevaEntrada = await prisma.entrada.create({
+        await prisma.entrada.create({
             data: {
                 fecha: fecha,
                 autoId,
             }
         })
-        res.json(nuevaEntrada);
+        return res.status(200);
 
     } catch (error) {
-        console.log(error);
+        next(error);
     }
 }
 
-const obtenerEntradas = async (req, res) => {
-    const entrada = await prisma.entrada.findMany();
-    res.json(entrada);
+const obtenerEntradas = async (req, res, next) => {
+
+    try {
+        const entradas = await prisma.entrada.findMany();
+        return res.status(200).json(entradas);
+
+    } catch (error) {
+        next(error);
+    }
 };
 
 
-const obtenerEntrada = async (req, res) => {
+const obtenerEntrada = async (req, res, next) => {
     const { id } = req.params;
     const autoId = Number(id);
 
-    const entrada = await prisma.entrada.findUnique({
-        where:{
-            autoId: autoId
-        }
-    })
-    res.json(entrada);
+    try {
+        const entrada = await prisma.entrada.findUnique({
+            where:{
+                autoId: autoId
+            }
+        })
+        return res.status(200).json(entrada);
+    } catch (error) {
+        next(error);
+    }
 }
 
-const eliminarEntrada = async (req, res) => {
-
+const eliminarEntrada = async (req, res, next) => {
     try {
-        const entradas = await prisma.entrada.deleteMany({});
-        res.json(entradas);
+        await prisma.entrada.deleteMany({});
+        return res.status(200);
     } catch (error) {
-        console.log(error);
+        next(error)
     }
 }
 

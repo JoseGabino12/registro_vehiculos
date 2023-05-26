@@ -1,15 +1,14 @@
 import express from "express";
 const router = express.Router();
 
-import { obtenerAutos, agregarAuto, obtenerAuto, actualizarStatusAuto, eliminarAuto } from "../controllers/autoController.js";
+import { obtenerAutos, agregarAuto, obtenerAuto, actualizarAuto, eliminarAuto } from "../controllers/autoController.js";
 
 
-//Inventario general
+//Autos general
 router.route("/").get(obtenerAutos).post(agregarAuto);
 
-// Productos en especifico
- router.route("/:id").get(obtenerAuto).put(actualizarStatusAuto).delete(eliminarAuto);
+//Auto en especifico
+ router.route("/:id").get(obtenerAuto).put(actualizarAuto).delete(eliminarAuto);
 
-//  .put(actualizarAuto).delete(eliminarAuto)
 
 export default router;
