@@ -17,9 +17,9 @@ export default function TableVehiculo ({ loading, entrada, salida }) {
       console.log(salidaItem)
       console.log(entradaItem)
       const fechaE = new Date(Number(entradaItem.fecha))
-      const horaE = fechaE.toUTCString()
+      const horaE = fechaE.toLocaleString('es-MX')
       const fechaS = new Date(Number(salidaItem.fecha))
-      const horaS = fechaS.toUTCString()
+      const horaS = fechaS.toLocaleString('es-MX')
       return {
         id: entradaItem.id,
         fechaEntrada: horaE,
@@ -28,7 +28,7 @@ export default function TableVehiculo ({ loading, entrada, salida }) {
       }
     } else {
       const fechaE = new Date(Number(entradaItem.fecha))
-      const horaE = fechaE.toUTCString()
+      const horaE = fechaE.toLocaleString('es-MX')
 
       return {
         id: entradaItem.id,
@@ -44,8 +44,9 @@ export default function TableVehiculo ({ loading, entrada, salida }) {
     <Table>
       <TableHead>
         <TableRow>
-          <TableHeaderCell>Registro de salida</TableHeaderCell>
+          <TableHeaderCell>ID vehiculo</TableHeaderCell>
           <TableHeaderCell>Registro de entrada</TableHeaderCell>
+          <TableHeaderCell>Registro de salida</TableHeaderCell>
         </TableRow>
       </TableHead>
       <TableBody>
