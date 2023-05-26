@@ -9,8 +9,8 @@ const agregarEntrada = async (req, res, next) => {
     try {
         await prisma.entrada.create({
             data: {
-                fecha,
-                autoId: autoId,
+                fecha: fecha,
+                autoId,
             }
         })
         return res.status(200);
