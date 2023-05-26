@@ -6,10 +6,9 @@ import { AllEntradasSalidas, allEntradasSalidasById } from "../controllers/allEn
 
 
 //Entrada
-router.route("/").get(AllEntradasSalidas).post(agregarEntrada).delete(eliminarEntrada);
+router.route("/").get(AllEntradasSalidas).delete(eliminarEntrada);
 
 // Entrada en especifico
 router.route("/:id").get(allEntradasSalidasById).post(agregarEntrada);
-
 
 export default router;

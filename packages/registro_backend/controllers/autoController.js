@@ -1,17 +1,28 @@
 import {PrismaClient} from "@prisma/client";
 const prisma = new PrismaClient();
 
-const obtenerAutos = async (req, res) => {
-    const autos = await prisma.auto.findMany();
-
-    res.json(autos);
-};
-
-const agregarAuto = async (req, res) => {
-    const {marca, anio, modelo, empresa, numeconomico, imagen} = req.body;
-    console.log(req.body);
+const obtenerAutos = async (req, res, next) => {
 
     try {
+        await prisma.auto.findMany();
+        return res.status(200);
+    } catch (error) {
+        next(error)
+    }
+};
+
+const agregarAuto = async (req, res, next) => {
+    const {marca, anio, modelo, empresa, numeconomico, imagen} = req.body;
+
+    try {
+        const autoExistente = await prisma.auto.findUnique({
+            where: { numeconomico: numeconomico }
+        });
+
+        if(autoExistente) {
+            throw new Error("Ya existe un vehiculo con ese numero economico");
+        }
+
         const nuevoAuto = await prisma.auto.create({
             data: {
                 marca,
@@ -23,13 +34,13 @@ const agregarAuto = async (req, res) => {
             }
         })
 
-        res.json(nuevoAuto);
+        return res.status(200);
     } catch (error) {
-        console.log(error);
+        next(error);
     }
 }
 
-const obtenerAuto = async (req, res) => {
+const obtenerAuto = async (req, res, next) => {
     const { id } = req.params;
     let idAuto = Number(id);
 
@@ -38,76 +49,70 @@ const obtenerAuto = async (req, res) => {
             where:{
                 id: idAuto
             }
-        })
-        res.json(auto);  
+        })  
+
+        if(!auto) {
+            throw new Error("No se encontro el auto");
+        }
+
+        return res.json(auto);
     } catch (error) {
-        res.status(404).json({msg: "No se encontro el auto"})
+        next(error);
     }
 }
 
-const actualizarStatusAuto = async (req, res) => {
+const actualizarAuto = async (req, res, next) => {
     const { id } = req.params;
     let idAuto = Number(id);
-
-    let auto = await prisma.auto.findUnique({
-        where:{
-            id: idAuto
-        }
-    })
-
-    if(!auto) {
-        const error = new Error("No se encontro el producto")
-        res.status(403).json({msg: error.message});
-    }
+    const { marca, anio, modelo, empresa, numeconomico, imagen } = req.body;
 
     try {
-        let { status } = auto;
+        let auto = await prisma.auto.findUnique({ where:{ id: idAuto }});
 
-        if(status === false ) {
-            status = true
-        } else {
-            status = false
+        if(!auto) {
+            throw new Error("No se encontro el auto");
         }
 
-        const autoActualizado = await prisma.auto.update({
+        auto.marca = marca || auto.marca;
+        auto.anio = anio || auto.anio;
+        auto.modelo = modelo || auto.modelo;
+        auto.empresa = empresa || auto.empresa;
+        auto.numeconomico = numeconomico || auto.numeconomico;
+        auto.imagen = imagen || auto.imagen;
+
+        await prisma.auto.update({
             where: {
                 id: idAuto
             },
-            data: {
-                status
-            }
+            data: auto
         })
 
-        res.json(autoActualizado);
-
+        return res.status(200);
     } catch (error) {
-        console.log(error);
+        next(error);
     }
 }
 
-const eliminarAuto = async (req, res) => {
+const eliminarAuto = async (req, res, next) => {
     const { id } = req.params;
     const autoId = Number(id);
-    const auto = await prisma.auto.findUnique({
-        where:{
-            id: autoId
-        }
-    })
-
-    if(!auto) {
-        const error = new Error("No se encontro el auto")
-        res.status(403).json({msg: error.message});
-    }
 
     try {
-        const autoEliminado = await prisma.auto.delete({
+        const auto = await prisma.auto.findUnique({ where:{ id: autoId }});
+    
+        if(!auto) {
+            throw new Error("No se encontro el auto");
+        }
+
+        await prisma.auto.delete({
             where: {
                 id: autoId
             }
-        })
-        res.json(autoEliminado);
+        });
+
+        return res.status(200);
     } catch (error) {
-        console.log(error);
+        next(error);
     }
 }
 
@@ -117,5 +122,5 @@ export {
     agregarAuto,
     obtenerAuto,
     eliminarAuto,
-    actualizarStatusAuto
+    actualizarAuto
 }

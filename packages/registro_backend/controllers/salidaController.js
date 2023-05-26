@@ -2,13 +2,12 @@ import {PrismaClient} from "@prisma/client";
 const prisma = new PrismaClient();
 
 
-const agregarSalida = async (req, res) => {
+const agregarSalida = async (req, res, next) => {
     const { id } = req.params;
     const { idEntrada } = req.body;
     let autoId = Number(id);
     const fecha = String(Date.now());
 
-    console.log(idEntrada)
     try {
         const entrada = await prisma.entrada.findFirst({
             where: {
@@ -16,45 +15,57 @@ const agregarSalida = async (req, res) => {
             }
         })
 
-        if(entrada != null) {
-                const nuevaSalida = await prisma.salida.create({
-                 data: {
-                     fecha,
-                     autoId,
-                     entradaId: entrada.id
-                 }
-             })
-             return res.json(nuevaSalida);
-        } else {
-            return res.status(403).json({msg: "No hay una entrada asociada a este automovil"});
+        if(entrada === null) {
+            throw new Error("No hay una entrada asociada a este automovil");
         }
 
+        await prisma.salida.create({
+            data: {
+                fecha,
+                autoId,
+                entradaId: entrada.id
+            }
+        })
+        return res.status(200);
+
     } catch (error) {
-        console.log(error);
+        next(error);
     }
 }
 
-const obtenerSalidas = async (req, res) => {
-    const salida = await prisma.salida.findMany();
-    res.json(salida);
+const obtenerSalidas = async (req, res, next) => {
+    try {
+        const salidas= await prisma.salida.findMany();
+        res.status(200).json(salidas);
+    } catch (error) {
+        next(error)
+    }
 };
 
-const obtenerSalida = async (req, res) => {
+const obtenerSalida = async (req, res, next) => {
     const { id } = req.params;
     const autoId = Number(id);
 
-    const salida = await prisma.salida.findUnique({
-        where:{
-            id: autoId
-        }
-    })
-    res.json(salida);
+    try {
+        const salida = await prisma.salida.findMany({
+            where:{
+                id: autoId
+            }
+        })
+        res.json(salida); 
+    } catch (error) {
+        next(error);
+    }
 }
 
-const eliminarSalidas = async (req, res) => {
-    const salidas = await prisma.salida.deleteMany({});
+const eliminarSalidas = async (req, res, next) => {
 
-    res.json(salidas);
+    try {
+        await prisma.salida.deleteMany({});
+        res.status(200);
+    } catch (error) {
+        next(error);
+    }
 }
 
 export {
