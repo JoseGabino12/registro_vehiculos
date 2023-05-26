@@ -10,7 +10,7 @@ const agregarEntrada = async (req, res) => {
         const nuevaEntrada = await prisma.entrada.create({
             data: {
                 fecha: fecha,
-                autoId: autoId,
+                autoId,
             }
         })
         res.json(nuevaEntrada);
