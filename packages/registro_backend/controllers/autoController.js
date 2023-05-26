@@ -4,8 +4,8 @@ const prisma = new PrismaClient();
 const obtenerAutos = async (req, res, next) => {
 
     try {
-        await prisma.auto.findMany();
-        return res.status(200);
+        const autos = await prisma.auto.findMany();
+        return res.status(200).json(autos);
     } catch (error) {
         next(error)
     }
