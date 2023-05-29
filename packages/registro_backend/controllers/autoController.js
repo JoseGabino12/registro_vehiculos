@@ -15,11 +15,11 @@ const agregarAuto = async (req, res, next) => {
     const {marca, anio, modelo, empresa, numeconomico, imagen} = req.body;
 
     try {
-        const autoExistente = await prisma.auto.findUnique({
+        const autoExistente = await prisma.auto.findFirst({
             where: { numeconomico: numeconomico }
         });
 
-        if(autoExistente) {
+        if(autoExistente.id) {
             throw new Error("Ya existe un vehiculo con ese numero economico");
         }
 
@@ -34,7 +34,8 @@ const agregarAuto = async (req, res, next) => {
             }
         })
 
-        return res.status(200);
+        return res.status(201).json({msg: `El auto con numero economico ${nuevoAuto.numeconomico} se ha agregado con exito`});
+
     } catch (error) {
         next(error);
     }
@@ -42,12 +43,16 @@ const agregarAuto = async (req, res, next) => {
 
 const obtenerAuto = async (req, res, next) => {
     const { id } = req.params;
-    let idAuto = Number(id);
+    let autoId = Number(id);
+
+    if(isNaN(autoId)) {
+        return res.status(400).json({msg: `No existe un automovil que coincida con su busqueda`});
+    }
 
     try {
-        const auto = await prisma.auto.findUnique({
+        const auto = await prisma.auto.findFirst({
             where:{
-                id: idAuto
+                id: autoId
             }
         })  
 
@@ -55,7 +60,7 @@ const obtenerAuto = async (req, res, next) => {
             throw new Error("No se encontro el auto");
         }
 
-        return res.json(auto);
+        return res.status(200).json(auto);
     } catch (error) {
         next(error);
     }
@@ -63,11 +68,15 @@ const obtenerAuto = async (req, res, next) => {
 
 const actualizarAuto = async (req, res, next) => {
     const { id } = req.params;
-    let idAuto = Number(id);
+    let autoId = Number(id);
     const { marca, anio, modelo, empresa, numeconomico, imagen } = req.body;
 
+    if(isNaN(autoId)) {
+        return res.status(400).json({msg: `No existe un automovil que coincida con su busqueda`});
+    }
+
     try {
-        let auto = await prisma.auto.findUnique({ where:{ id: idAuto }});
+        let auto = await prisma.auto.findFirst({ where:{ id: autoId }});
 
         if(!auto) {
             throw new Error("No se encontro el auto");
@@ -82,12 +91,12 @@ const actualizarAuto = async (req, res, next) => {
 
         await prisma.auto.update({
             where: {
-                id: idAuto
+                id: autoId
             },
             data: auto
         })
 
-        return res.status(200);
+        return res.status(201).json({msg: `El auto ha sido actualizado exitosamente`});
     } catch (error) {
         next(error);
     }
@@ -97,8 +106,12 @@ const eliminarAuto = async (req, res, next) => {
     const { id } = req.params;
     const autoId = Number(id);
 
+    if(isNaN(autoId)) {
+        return res.status(400).json({msg: `No existe un automovil que coincida con su busqueda`});
+    }
+
     try {
-        const auto = await prisma.auto.findUnique({ where:{ id: autoId }});
+        const auto = await prisma.auto.findFirst({ where:{ id: autoId }});
     
         if(!auto) {
             throw new Error("No se encontro el auto");
@@ -110,7 +123,42 @@ const eliminarAuto = async (req, res, next) => {
             }
         });
 
-        return res.status(200);
+        return res.status(200).json({msg: `El auto con numero economico ${auto.numeconomico} ha sido eliminado exitosamente`});
+    } catch (error) {
+        next(error);
+    }
+}
+
+const setStatus = async (req, res, next) => {
+    const { id } = req.body;
+    let autoId = Number(id);
+
+    if(isNaN(autoId)) {
+        return res.status(400).json({msg: `No existe un automovil que coincida con su busqueda`});
+    }
+
+    try {
+
+        const auto = await prisma.auto.findFirst({
+            where:{
+                id: autoId
+            }
+        })  
+
+        if(!auto) {
+            throw new Error("No se encontro el auto");
+        }
+
+        const autoActualizado = await prisma.auto.update({
+            where: {
+                id: auto.id
+            },
+            data: {
+                status: !auto.status
+            }
+        })
+
+        return res.status(201).json({msg: `El status se ha actualizado correctamente`});
     } catch (error) {
         next(error);
     }

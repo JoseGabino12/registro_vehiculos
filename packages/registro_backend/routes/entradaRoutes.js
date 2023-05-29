@@ -1,12 +1,12 @@
 import express from "express";
 const router = express.Router();
 
-import { agregarEntrada, eliminarEntrada } from "../controllers/entradaController.js";
-import { AllEntradasSalidas, allEntradasSalidasById } from "../controllers/allEntradaSalida.js";
+import { agregarEntrada, eliminarEntradas } from "../controllers/entradaController.js";
+import { allEntradasSalidas, allEntradasSalidasById } from "../controllers/allEntradaSalida.js";
 
 
 //Entrada
-router.route("/").get(AllEntradasSalidas).delete(eliminarEntrada);
+router.route("/").get(allEntradasSalidas).delete(eliminarEntradas)
 
 // Entrada en especifico
 router.route("/:id").get(allEntradasSalidasById).post(agregarEntrada);
