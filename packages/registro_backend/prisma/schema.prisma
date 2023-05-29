@@ -24,11 +24,11 @@ model Auto {
 }
 
 model Entrada {
-  id     Int     @id @default(autoincrement())
-  fecha  String
-  auto   Auto    @relation(fields: [autoId], references: [id])
-  autoId Int
-  Salida Salida?
+  id       Int     @id @default(autoincrement())
+  fecha    String
+  auto     Auto    @relation(fields: [autoId], references: [id])
+  autoId   Int
+  salidaId Salida?
 }
 
 model Salida {
