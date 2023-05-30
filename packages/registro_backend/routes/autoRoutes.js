@@ -6,6 +6,7 @@ import { obtenerAutos, agregarAuto, obtenerAuto, actualizarAuto, eliminarAuto, s
 
 //Autos general
 router.route("/").get(obtenerAutos).post(agregarAuto);
+router.route("/status/:id").put(setStatus);
 
 //Auto en especifico
  router.route("/:id").get(obtenerAuto).put(actualizarAuto).delete(eliminarAuto);
