@@ -9,7 +9,7 @@ export default function HeaderForm ({ handleSubmit, success, msgError, loading }
       {
         success
           ? <section className='flex flex-row gap-2 items-center justify-center'>
-            <h1 className='text-3xl text-green-500'>Registro exitoso</h1>
+            <h1 className='text-3xl text-green-500'>{msgError}</h1>
           </section>
           : <section className='flex flex-row gap-2 items-center justify-center'>
             <h1 className='text-3xl text-red-500'>{msgError}</h1>

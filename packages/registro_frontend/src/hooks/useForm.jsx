@@ -2,6 +2,7 @@ import { useState } from 'react'
 
 export function useForm () {
   const [msg, setMsg] = useState('')
+  const [success, setSuccess] = useState(false)
   const [loading, setLoading] = useState(false)
 
   const postForm = async (form) => {
@@ -22,11 +23,19 @@ export function useForm () {
         }
       })
 
-      const res = await respuesta.json()
-      setMsg(res.msg)
-      setLoading(false)
+      if (!respuesta.ok) {
+        const res = await respuesta.json()
+        setMsg(res.msg)
+        setSuccess(false)
+        setLoading(false)
+        return
+      } else {
+        setMsg('Formulario enviado correctamente')
+        setSuccess(true)
+        setLoading(false)
+        return
+      }
     } catch (e) {
-      console.log(e)
       setMsg('Error al enviar el formulario')
     }
   }
@@ -34,6 +43,7 @@ export function useForm () {
   return {
     loading,
     postForm,
-    msg
+    msg,
+    success
   }
 }

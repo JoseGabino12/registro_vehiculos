@@ -19,14 +19,14 @@ model Auto {
   numeconomico String    @unique
   imagen       String
   status       Boolean   @default(false)
-  entradas     Entrada[]
-  salidas      Salida[]
+  entradas     Entrada[] @relation("entrada_auto")
+  salidas      Salida[]  @relation("salida_auto")
 }
 
 model Entrada {
   id            Int    @id @default(autoincrement())
   fecha         String
-  auto          Auto   @relation(fields: [autoId], references: [id])
+  auto          Auto   @relation("entrada_auto", fields: [autoId], references: [id])
   autoId        Int
   transaccionId String
 }
@@ -34,7 +34,7 @@ model Entrada {
 model Salida {
   id            Int    @id @default(autoincrement())
   fecha         String
-  auto          Auto   @relation(fields: [autoId], references: [id])
+  auto          Auto   @relation("salida_auto", fields: [autoId], references: [id])
   autoId        Int
   transaccionId String
 }

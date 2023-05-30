@@ -111,17 +111,64 @@ const eliminarAuto = async (req, res, next) => {
     }
 
     try {
-        const auto = await prisma.auto.findFirst({ where:{ id: autoId }});
-    
-        if(!auto) {
-            throw new Error("No se encontro el auto");
-        }
-
-        await prisma.auto.delete({
+        const entradas = await prisma.entrada.findMany({
             where: {
-                id: autoId
-            }
+              autoId,
+            },
+            select: {
+                id: true,
+            },
         });
+        
+        const salidas = await prisma.salida.findMany({
+            where: {
+                autoId,
+            },
+            select: {
+                id: true,
+            },
+        });
+        
+        const idsEntradas = entradas.map((entrada) => entrada.id);
+        const idsSalidas = salidas.map((salida) => salida.id);
+          await prisma.entrada.deleteMany({
+            where: {
+              id: {
+                in: idsEntradas,
+              },
+            },
+          });
+          
+          await prisma.salida.deleteMany({
+            where: {
+              id: {
+                in: idsSalidas,
+              },
+            },
+          });
+
+          await prisma.auto.delete({
+            where: {
+              id: autoId,
+            },
+          });
+
+
+        // const auto = await prisma.auto.findFirst({ where:{ id: autoId }});
+    
+        // if(!auto) {
+        //     throw new Error("No se encontro el auto");
+        // }
+
+        // await prisma.auto.delete({
+        //     where: {
+        //         id: auto.id
+        //     },
+        //     include: {
+        //         entradas: true,
+        //         salidas: true
+        //     }
+        // });
 
         return res.status(200).json({msg: `El auto con numero economico ${auto.numeconomico} ha sido eliminado exitosamente`});
     } catch (error) {
