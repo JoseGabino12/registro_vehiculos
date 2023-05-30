@@ -6,7 +6,7 @@ export default function TableInfo ({ vehiculo }) {
   const { postEntrada, postSalida, loading, fechasES } = useEntradaSalida(vehiculo.id)
 
   return (
-    <div className='grid gap-4 grid-flow-col p-10'>
+    <div className='grid md:grid-rows-1 md:grid-cols-2 grid-cols-1 grid-rows-2'>
       <Info vehiculo={vehiculo} postEntrada={postEntrada} postSalida={postSalida} loading={loading} />
       <TableVehiculo loading={loading} fechasES={fechasES} />
     </div>

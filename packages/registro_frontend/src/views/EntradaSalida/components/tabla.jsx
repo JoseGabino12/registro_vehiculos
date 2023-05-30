@@ -65,7 +65,7 @@ export default function TableInfo ({ entrada, salida }) {
                       </Badge>
                     </TableCell>
                     <TableCell>
-                      <Badge color="emerald">
+                      <Badge color="red">
                         {data.fechaSalida}
                       </Badge>
                     </TableCell>

@@ -7,12 +7,12 @@ import { useVehiculo } from '../../hooks/useVehiculo'
 
 export default function Vehiculo () {
   const { id } = useParams()
-  const { vehiculo, loading } = useVehiculo(id)
+  const { vehiculo, loading, deleteVehiculo } = useVehiculo(id)
 
   return (
     <main className='p-24'>
-      <Card>
-        <TitleInfo vehiculo={vehiculo} />
+      <Card className='p-10'>
+        <TitleInfo vehiculo={vehiculo} deleteVehiculo={deleteVehiculo} />
         {
           loading
             ? <p>Cargando...</p>

@@ -19,7 +19,7 @@ const agregarAuto = async (req, res, next) => {
             where: { numeconomico: numeconomico }
         });
 
-        if(autoExistente.id) {
+        if(autoExistente) {
             throw new Error("Ya existe un vehiculo con ese numero economico");
         }
 
@@ -105,6 +105,8 @@ const actualizarAuto = async (req, res, next) => {
 const eliminarAuto = async (req, res, next) => {
     const { id } = req.params;
     const autoId = Number(id);
+
+    console.log(id);
 
     if(isNaN(autoId)) {
         return res.status(400).json({msg: `No existe un automovil que coincida con su busqueda`});

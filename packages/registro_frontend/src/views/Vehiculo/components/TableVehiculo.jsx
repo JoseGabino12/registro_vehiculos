@@ -38,7 +38,7 @@ export default function TableVehiculo ({ loading, fechasES }) {
                       </Badge>
                     </TableCell>
                     <TableCell>
-                      <Badge color="emerald">
+                      <Badge color="red">
                         {data.fechaSalida}
                       </Badge>
                     </TableCell>

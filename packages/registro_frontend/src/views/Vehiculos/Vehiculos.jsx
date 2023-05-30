@@ -11,6 +11,7 @@ import {
 } from '@tremor/react'
 import { Link } from 'react-router-dom'
 import { useVehiculos } from '../../hooks/useVehiculos'
+import { SiAddthis } from 'react-icons/si'
 
 export default function Vehículos () {
   const { vehiculos, loading } = useVehiculos()
@@ -21,7 +22,11 @@ export default function Vehículos () {
         loading
           ? <Title>Cargando...</Title>
           : <>
-            <Title className='flex justify-between'>Registro de vehículos <Link className='text-sm bg-green-200 p-2 rounded-md hover:bg-green-500 hover:text-white hover:scale-110 transition duration-150 ease-in-out' to='/registrar_vehiculo'>Agregar +</Link></Title>
+            <Title className='flex justify-between'>Registro de vehículos
+              <Link to='/registrar_vehiculo'>
+                <SiAddthis className='text-2xl text-green-500 hover:scale-110' />
+              </Link>
+            </Title>
             <Table className="mt-5">
               <TableHead>
                 <TableRow>
