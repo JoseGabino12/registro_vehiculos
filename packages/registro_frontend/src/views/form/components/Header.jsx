@@ -1,8 +1,9 @@
 import { BsSendFill } from 'react-icons/bs'
 import { Link } from 'react-router-dom'
 import { IoIosArrowRoundBack } from 'react-icons/io'
+import { CircleLoading } from '../../../assets/Circle'
 
-export default function HeaderForm ({ handleSubmit, success, msgError }) {
+export default function HeaderForm ({ handleSubmit, success, msgError, loading }) {
   return (
     <>
       {
@@ -23,7 +24,11 @@ export default function HeaderForm ({ handleSubmit, success, msgError }) {
           onSubmit={handleSubmit}
         >
           <button type="submit" className='text-lg bg-green-500 p-3 rounded-md hover:bg-green-700 hover:text-white hover:scale-110 transition duration-150 ease-in-out'>
-            <BsSendFill className='text-white' />
+            {
+              loading
+                ? <CircleLoading classCircle='w-7 h-7 animate-spin text-white' />
+                : <BsSendFill className='text-white' />
+            }
           </button>
         </form>
       </div>

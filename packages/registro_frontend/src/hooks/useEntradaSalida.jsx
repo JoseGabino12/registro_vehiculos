@@ -84,8 +84,7 @@ export function useEntradaSalida (id) {
       await fetch(`http://localhost:4000/api/entrada/${id}`)
         .then((response) => response.json())
         .then((data) => {
-          const { io } = data
-          setFechasES(fechasEntradaSalida(io[0].entradas, io[1].salidas))
+          setFechasES(fechasEntradaSalida(data[0].entradas, data[1].salidas))
 
           setLoading(false)
         })

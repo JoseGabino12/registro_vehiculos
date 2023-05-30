@@ -1,14 +1,34 @@
 import { Title } from '@tremor/react'
+import { useState } from 'react'
 import { IoIosArrowRoundBack } from 'react-icons/io'
-import { Link } from 'react-router-dom'
+import { RiDeleteBin5Line } from 'react-icons/ri'
+import { Link, useNavigate } from 'react-router-dom'
+import { CircleLoading } from '../../../assets/Circle'
 
-export default function TitleInfo ({ id }) {
+export default function TitleInfo ({ vehiculo, deleteVehiculo }) {
+  const navigate = useNavigate()
+  const [loading, setLoading] = useState(false)
+
+  const handleDelete = async () => {
+    setLoading(true)
+    await deleteVehiculo()
+    setLoading(false)
+    navigate('/')
+  }
+
   return (
-    <Title className='flex gap-2 items-center'>
-      <Link to='/'>
-        <IoIosArrowRoundBack className='text-2xl hover:scale-110 hover:cursor-pointer' />
-      </Link>
-      Registro de vehículo {id}
-    </Title>
+    <div className='flex justify-between'>
+      <Title className='flex gap-2 items-center'>
+        <Link to='/'>
+          <IoIosArrowRoundBack className='text-2xl hover:scale-110 hover:cursor-pointer' />
+        </Link>
+        Registro de vehículo {vehiculo.id}
+      </Title>
+      {
+        loading
+          ? <CircleLoading classCircle='w-7 h-7 animate-spin text-red' />
+          : <RiDeleteBin5Line onClick={handleDelete} className='text-2xl text-red-600 hover:scale-110 hover:cursor-pointer' />
+      }
+    </div>
   )
 }
