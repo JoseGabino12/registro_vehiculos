@@ -5,7 +5,7 @@ export function useEntradaSalida (id) {
   const [loading, setLoading] = useState(true)
 
   const putStatus = async (setStatusVehiculo) => {
-    await fetch(`http://localhost:4000/api/auto/${id}`, {
+    await fetch(`http://localhost:4000/api/entrada/${id}`, {
       method: 'PUT'
     })
       .then((response) => response.json())
@@ -85,7 +85,6 @@ export function useEntradaSalida (id) {
         .then((response) => response.json())
         .then((data) => {
           setFechasES(fechasEntradaSalida(data[0].entradas, data[1].salidas))
-
           setLoading(false)
         })
     }

@@ -11,7 +11,6 @@ import {
 export default function TableInfo ({ entrada, salida }) {
   const { entradas } = entrada
   const { salidas } = salida
-  console.log(entradas, salidas)
   const data = entradas.map(entradaItem => {
     const salidaItem = salidas.find(salidaItem => salidaItem.entradaId === entradaItem.id)
 

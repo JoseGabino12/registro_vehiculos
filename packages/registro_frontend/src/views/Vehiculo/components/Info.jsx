@@ -21,7 +21,7 @@ export default function Info ({ vehiculo, postEntrada, postSalida, loading }) {
   }, [vehiculo.status])
 
   return (
-    <div className='flex flex-row gap-5 items-center'>
+    <div className='flex flex-row gap-5 items-center p-5'>
       <img src={vehiculo.imagen} className='h-52 w-auto bg-cover' alt='Carro Mazda 3' />
       <div className='flex flex-col gap-3'>
         <Text>
