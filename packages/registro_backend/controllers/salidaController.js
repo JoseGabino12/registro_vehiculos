@@ -1,94 +1,39 @@
 import {PrismaClient} from "@prisma/client";
 const prisma = new PrismaClient();
 
-
-// const agregarSalida = async (req, res, next) => {
-//     const { idEntrada } = req.body;
-//     const fecha = String(Date.now());
-    
-//     const { id } = req.params;
-//     let autoId = Number(id);
-
-//     if(isNaN(autoId)) {
-//         return res.status(400).json({msg: `No existe un automovil que coincida con su busqueda`});
-//     }
-
-//     try {
-//         const entrada = await prisma.entrada.findFirst({
-//             where: {
-//                 id: idEntrada
-//             }
-//         })
-
-//         if(entrada === null) {
-//             throw new Error("No hay una entrada asociada a este automovil");
-//         }
-
-//         await prisma.salida.create({
-//             data: {
-//                 fecha,
-//                 autoId,
-//                 entradaId: entrada.id
-//             }
-//         })
-//         return res.status(200);
-
-//     } catch (error) {
-//         next(error);
-//     }
-// }
-
-// const obtenerSalidas = async (req, res, next) => {
-//     try {
-//         const salidas= await prisma.salida.findMany();
-//         res.status(200).json(salidas);
-//     } catch (error) {
-//         next(error)
-//     }
-// };
-
-// const obtenerSalida = async (req, res, next) => {
-//     const { id } = req.params;
-//     const autoId = Number(id);
-
-//     if(isNaN(autoId)) {
-//         return res.status(400).json({msg: `No existe un automovil que coincida con su busqueda`});
-//     }
-
-//     try {
-
-//         const salida = await prisma.salida.findFirst({
-//             where:{
-//                 autoId,
-//             }
-//         })
-//         res.json(salida); 
-//     } catch (error) {
-//         next(error);
-//     }
-// }
-
-
-// Falta aqui ver la logica
 const modificarSalida = async (req, res, next) => {
-    const fecha = new Date.now();
-        const { id } = req.params;
-        let autoId = Number(id);
-    
+    const fecha = String(Date.now());
+    let autoId = Number(req.body.autoId);
+    console.log(autoId, typeof autoId);
+
+    if(isNaN(autoId)) {
+        return res.status(400).json({msg: `No existe un automovil con ese id`});
+    }
+
     try {
+        const transaccionesAuto = await prisma.salida.findMany({
+            where: {
+                autoId: autoId
+            }
+        });
+
         const salidaModificada = await prisma.salida.update({
             where: {
-                autoId,
+                id: transaccionesAuto[transaccionesAuto.length - 1].id
             },
-            data: {fecha}
+            data: {
+                fecha
+            }
         })
 
-        return res.status(201).json({msg: `La salida se ha modificado exitosamente`})
+        console.log(salidaModificada)
+
+        res.status(201).json({msg: `Se ha agregado la hora de salida correctamente`})
     } catch (error) {
         next(error)
     }
 
-    return 
+    next();
 }
 
 const eliminarSalidas = async (req, res, next) => {
@@ -101,8 +46,6 @@ const eliminarSalidas = async (req, res, next) => {
 }
 
 export {
-    // obtenerSalidas,
-    // obtenerSalida,
-    eliminarSalidas,
-    modificarSalida
+    modificarSalida,
+    eliminarSalidas
 }

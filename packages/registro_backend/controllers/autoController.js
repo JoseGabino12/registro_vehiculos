@@ -34,7 +34,7 @@ const agregarAuto = async (req, res, next) => {
             }
         })
 
-        return res.status(201).json({msg: `El auto con numero economico ${nuevoAuto.numeconomico} se ha agregado con exito`});
+        return res.status(201).json({msg: `El auto con numero economico ${nuevoAuto.numeconomico} ha sido agregado con exito`});
 
     } catch (error) {
         next(error);
@@ -106,8 +106,6 @@ const eliminarAuto = async (req, res, next) => {
     const { id } = req.params;
     const autoId = Number(id);
 
-    console.log(id);
-
     if(isNaN(autoId)) {
         return res.status(400).json({msg: `No existe un automovil que coincida con su busqueda`});
     }
@@ -140,7 +138,6 @@ const setStatus = async (req, res, next) => {
     }
 
     try {
-
         const auto = await prisma.auto.findFirst({
             where:{
                 id: autoId
@@ -151,13 +148,14 @@ const setStatus = async (req, res, next) => {
             throw new Error("No se encontro el auto");
         }
 
+        // Cambiar el valor
+        auto.status = !auto.status;
+
         const autoActualizado = await prisma.auto.update({
             where: {
                 id: auto.id
             },
-            data: {
-                status: !auto.status
-            }
+            data: auto
         })
 
         return res.status(201).json({msg: `El status se ha actualizado correctamente`});
@@ -172,5 +170,6 @@ export {
     agregarAuto,
     obtenerAuto,
     eliminarAuto,
-    actualizarAuto
+    actualizarAuto,
+    setStatus
 }
