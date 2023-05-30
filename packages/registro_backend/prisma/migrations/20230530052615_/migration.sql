@@ -9,6 +9,7 @@ CREATE TABLE `Auto` (
     `imagen` VARCHAR(191) NOT NULL,
     `status` BOOLEAN NOT NULL DEFAULT false,
 
+    UNIQUE INDEX `Auto_numeconomico_key`(`numeconomico`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -17,6 +18,7 @@ CREATE TABLE `Entrada` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `fecha` VARCHAR(191) NOT NULL,
     `autoId` INTEGER NOT NULL,
+    `transaccionId` VARCHAR(191) NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -26,9 +28,8 @@ CREATE TABLE `Salida` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `fecha` VARCHAR(191) NOT NULL,
     `autoId` INTEGER NOT NULL,
-    `entradaId` INTEGER NOT NULL,
+    `transaccionId` VARCHAR(191) NOT NULL,
 
-    UNIQUE INDEX `Salida_entradaId_key`(`entradaId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -37,6 +38,3 @@ ALTER TABLE `Entrada` ADD CONSTRAINT `Entrada_autoId_fkey` FOREIGN KEY (`autoId`
 
 -- AddForeignKey
 ALTER TABLE `Salida` ADD CONSTRAINT `Salida_autoId_fkey` FOREIGN KEY (`autoId`) REFERENCES `Auto`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `Salida` ADD CONSTRAINT `Salida_entradaId_fkey` FOREIGN KEY (`entradaId`) REFERENCES `Entrada`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

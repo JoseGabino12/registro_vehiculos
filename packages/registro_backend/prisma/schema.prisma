@@ -16,26 +16,25 @@ model Auto {
   anio         String
   modelo       String
   empresa      String
-  numeconomico String
+  numeconomico String    @unique
   imagen       String
   status       Boolean   @default(false)
-  Entrada      Entrada[]
-  Salida       Salida[]
+  entradas     Entrada[]
+  salidas      Salida[]
 }
 
 model Entrada {
-  id       Int     @id @default(autoincrement())
-  fecha    String
-  auto     Auto    @relation(fields: [autoId], references: [id])
-  autoId   Int
-  salidaId Salida?
+  id            Int    @id @default(autoincrement())
+  fecha         String
+  auto          Auto   @relation(fields: [autoId], references: [id])
+  autoId        Int
+  transaccionId String
 }
 
 model Salida {
-  id        Int     @id @default(autoincrement())
-  fecha     String
-  auto      Auto    @relation(fields: [autoId], references: [id])
-  autoId    Int
-  entrada   Entrada @relation(fields: [entradaId], references: [id])
-  entradaId Int     @unique
+  id            Int    @id @default(autoincrement())
+  fecha         String
+  auto          Auto   @relation(fields: [autoId], references: [id])
+  autoId        Int
+  transaccionId String
 }

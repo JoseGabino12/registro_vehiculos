@@ -6,6 +6,8 @@ import {
     modificarSalida
 } from "../controllers/salidaController.js";
 
+import { setStatus } from "../controllers/autoController.js";
+
 
 //Salida
 router.route("/").delete(eliminarSalidas);

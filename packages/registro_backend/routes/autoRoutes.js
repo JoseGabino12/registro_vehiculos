@@ -1,7 +1,7 @@
 import express from "express";
 const router = express.Router();
 
-import { obtenerAutos, agregarAuto, obtenerAuto, actualizarAuto, eliminarAuto } from "../controllers/autoController.js";
+import { obtenerAutos, agregarAuto, obtenerAuto, actualizarAuto, eliminarAuto, setStatus } from "../controllers/autoController.js";
 
 
 //Autos general
