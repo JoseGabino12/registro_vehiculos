@@ -14,6 +14,11 @@ const routes = [
     Component: Form
   },
   {
+    name: 'editar_vehiculo',
+    path: '/editar_vehiculo/:id',
+    Component: Form
+  },
+  {
     name: 'vehiculos',
     path: '/vehiculos/:id',
     Component: Vehiculo

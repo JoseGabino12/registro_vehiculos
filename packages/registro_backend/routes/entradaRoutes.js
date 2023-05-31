@@ -7,9 +7,9 @@ import { setStatus } from "../controllers/autoController.js";
 
 
 //Entrada
-router.route("/").get(allEntradasSalidas).delete(eliminarEntradas)
+router.route("/").get(allEntradasSalidas).delete(eliminarEntradas);
 
 // Entrada en especifico
-router.route("/:id").get(allEntradasSalidasById).post(agregarEntrada).put(setStatus);
+router.route("/:id").get(allEntradasSalidasById).post(agregarEntrada);
 
 export default router;

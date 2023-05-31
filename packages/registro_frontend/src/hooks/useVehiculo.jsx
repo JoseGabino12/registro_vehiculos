@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 
 export function useVehiculo (id) {
   const [vehiculo, setVehiculo] = useState({})
-  const [loading, setLoading] = useState(true)
+  const [loadingVehiculos, setLoadingVehiculos] = useState(true)
 
   const deleteVehiculo = async () => {
     await fetch(`http://localhost:4000/api/auto/${vehiculo.id}`, {
@@ -15,17 +15,19 @@ export function useVehiculo (id) {
   }
 
   useEffect(() => {
-    fetch(`http://localhost:4000/api/auto/${id}`)
-      .then((response) => response.json())
-      .then((data) => {
-        setVehiculo(data)
-        setLoading(false)
-      })
+    if (id !== undefined) {
+      fetch(`http://localhost:4000/api/auto/${id}`)
+        .then((response) => response.json())
+        .then((data) => {
+          setVehiculo(data)
+          setLoadingVehiculos(false)
+        })
+    }
   }, [id])
 
   return {
     deleteVehiculo,
     vehiculo,
-    loading
+    loadingVehiculos
   }
 }

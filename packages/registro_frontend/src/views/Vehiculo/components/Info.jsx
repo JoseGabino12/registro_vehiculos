@@ -1,17 +1,18 @@
 import { Text } from '@tremor/react'
-import { useEffect, useState } from 'react'
 import { CircleLoading } from '../../../assets/Circle'
 import { FiEdit } from 'react-icons/fi'
+import { Link } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { useEntradaSalida } from '../../../hooks/useEntradaSalida'
 
-export default function Info ({ vehiculo, postEntrada, postSalida, loading }) {
-  const [statusVehiculo, setStatusVehiculo] = useState(null)
+export default function Info ({ vehiculo }) {
+  const { postEntrada, postSalida, loading } = useEntradaSalida(vehiculo.id)
+  const [statusVehiculo, setStatusVehiculo] = useState(false)
 
   const handleEntrada = async () => {
     if (statusVehiculo) {
-      console.log('Entrada')
       postSalida(setStatusVehiculo)
     } else {
-      console.log('Salida')
       postEntrada(setStatusVehiculo)
     }
   }
@@ -40,9 +41,9 @@ export default function Info ({ vehiculo, postEntrada, postSalida, loading }) {
           <strong>Número económico:</strong> {vehiculo.numeconomico}
         </Text>
         <div className='flex flex-row gap-3'>
-          <button className='bg-blue-500 text-white p-2 rounded-lg hover:scale-110'>
+          <Link to={`/editar_vehiculo/${vehiculo.id}`} className='bg-blue-500 text-white p-2 rounded-lg hover:scale-110'>
             <FiEdit className='text-xl' />
-          </button>
+          </Link>
           {
             loading
               ? <button type='button' disabled className={statusVehiculo ? 'bg-red-600 text-white rounded-lg justify-center flex items-center opacity-60' : 'bg-green-600 text-white rounded-lg flex justify-center items-center opacity-60'} onClick={handleEntrada}>
