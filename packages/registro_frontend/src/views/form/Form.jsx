@@ -4,7 +4,7 @@ import { useForm } from '../../hooks/useForm'
 import { useState } from 'react'
 
 export default function Form () {
-  const { postForm, msg, loading, success } = useForm()
+  const { postForm, msg, loading, isMsg } = useForm()
   const [form, setForm] = useState({
     marca: '',
     modelo: '',
@@ -29,7 +29,7 @@ export default function Form () {
   return (
     <main className='p-24 flex justify-center items-center'>
       <section className="w-1/2 p-9 flex flex-col gap-5 rounded-lg border-2 shadow-lg">
-        <HeaderForm handleSubmit={handleSubmit} success={success} msgError={msg} loading={loading} />
+        <HeaderForm handleSubmit={handleSubmit} success={isMsg} msgError={msg} loading={loading} />
         <FormInputs handleChange={handleChange} />
       </section>
     </main>

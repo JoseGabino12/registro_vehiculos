@@ -177,7 +177,7 @@ const eliminarAuto = async (req, res, next) => {
 }
 
 const setStatus = async (req, res, next) => {
-    const { id } = req.body;
+    const { id } = req.params;
     let autoId = Number(id);
 
     if(isNaN(autoId)) {

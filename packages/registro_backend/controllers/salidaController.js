@@ -4,7 +4,6 @@ const prisma = new PrismaClient();
 const modificarSalida = async (req, res, next) => {
     const fecha = String(Date.now());
     let autoId = Number(req.body.autoId);
-    console.log(autoId, typeof autoId);
 
     if(isNaN(autoId)) {
         return res.status(400).json({msg: `No existe un automovil con ese id`});
@@ -25,8 +24,6 @@ const modificarSalida = async (req, res, next) => {
                 fecha
             }
         })
-
-        console.log(salidaModificada)
 
         res.status(201).json({msg: `Se ha agregado la hora de salida correctamente`})
     } catch (error) {

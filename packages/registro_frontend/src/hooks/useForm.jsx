@@ -1,15 +1,20 @@
 import { useState } from 'react'
 
 export function useForm () {
-  const [msg, setMsg] = useState('')
-  const [success, setSuccess] = useState(false)
+  const [msg, setMsg] = useState({
+    msg: '',
+    type: ''
+  })
+  const [isMsg, setIsMsg] = useState(false)
   const [loading, setLoading] = useState(false)
 
   const postForm = async (form) => {
-    setMsg('')
+    setMsg({ msg: '', type: '' })
+    setIsMsg(false)
     setLoading(true)
     if (form.marca === '' || form.modelo === '' || form.anio === '' || form.empresa === '' || form.numeconomico === '' || form.imagen === '') {
-      setMsg('Todos los campos son obligatorios')
+      setMsg({ msg: 'Todos los campos son obligatorios', type: 'error' })
+      setIsMsg(true)
       setLoading(false)
       return
     }
@@ -25,13 +30,13 @@ export function useForm () {
 
       if (!respuesta.ok) {
         const res = await respuesta.json()
-        setMsg(res.msg)
-        setSuccess(false)
+        setMsg({ msg: res.msg, type: 'error' })
+        setIsMsg(true)
         setLoading(false)
         return
       } else {
-        setMsg('Formulario enviado correctamente')
-        setSuccess(true)
+        setMsg({ msg: 'Formulario enviado correctamente', type: 'success' })
+        setIsMsg(true)
         setLoading(false)
         return
       }
@@ -44,6 +49,6 @@ export function useForm () {
     loading,
     postForm,
     msg,
-    success
+    isMsg
   }
 }

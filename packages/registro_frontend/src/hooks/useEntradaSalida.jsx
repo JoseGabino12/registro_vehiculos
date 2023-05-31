@@ -5,7 +5,7 @@ export function useEntradaSalida (id) {
   const [loading, setLoading] = useState(true)
 
   const putStatus = async (setStatusVehiculo) => {
-    await fetch(`http://localhost:4000/api/entrada/${id}`, {
+    await fetch(`http://localhost:4000/api/auto/status/${id}`, {
       method: 'PUT'
     })
       .then((response) => response.json())
@@ -17,10 +17,9 @@ export function useEntradaSalida (id) {
 
   const postSalida = async (setStatusVehiculo) => {
     setLoading(true)
-    const idE = Number(localStorage.getItem('idEntrada'))
     await fetch(`http://localhost:4000/api/salida/${id}`, {
-      method: 'POST',
-      body: JSON.stringify({ autoId: id, idEntrada: idE }),
+      method: 'PUT',
+      body: JSON.stringify({ autoId: id }),
       headers: {
         'Content-Type': 'application/json'
       }
@@ -43,16 +42,15 @@ export function useEntradaSalida (id) {
     })
       .then((response) => response.json())
       .then((data) => {
-        localStorage.setItem('idEntrada', data.id)
         putStatus(setStatusVehiculo)
       })
   }
 
   const fechasEntradaSalida = (entrada, salida) => {
     const data = entrada.map(entradaItem => {
-      const salidaItem = salida.find(salidaItem => salidaItem.entradaId === entradaItem.id)
+      const salidaItem = salida.find(salidaItem => salidaItem.transaccionId === entradaItem.transaccionId)
 
-      if (salidaItem !== undefined) {
+      if (salidaItem.fecha !== '') {
         const fechaE = new Date(Number(entradaItem.fecha))
         const horaE = fechaE.toLocaleString('es-MX', { hour12: true })
         const fechaS = new Date(Number(salidaItem.fecha))

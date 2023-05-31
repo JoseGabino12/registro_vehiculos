@@ -2,18 +2,15 @@ import { BsSendFill } from 'react-icons/bs'
 import { Link } from 'react-router-dom'
 import { IoIosArrowRoundBack } from 'react-icons/io'
 import { CircleLoading } from '../../../assets/Circle'
+import { Callout } from '@tremor/react'
 
 export default function HeaderForm ({ handleSubmit, success, msgError, loading }) {
   return (
     <>
       {
         success
-          ? <section className='flex flex-row gap-2 items-center justify-center'>
-            <h1 className='text-3xl text-green-500'>{msgError}</h1>
-          </section>
-          : <section className='flex flex-row gap-2 items-center justify-center'>
-            <h1 className='text-3xl text-red-500'>{msgError}</h1>
-          </section>
+          ? <Callout title={msgError.type === 'error' ? 'Error' : 'Exito'} color={msgError.type === 'error' ? 'rose' : 'teal'}>{msgError.msg}</Callout>
+          : null
       }
       <div className='flex flex-row mb-7 items-center justify-between'>
         <Link to='/'>
