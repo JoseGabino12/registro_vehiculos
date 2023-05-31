@@ -4,9 +4,11 @@ import { IoIosArrowRoundBack } from 'react-icons/io'
 import { RiDeleteBin5Line } from 'react-icons/ri'
 import { Link, useNavigate } from 'react-router-dom'
 import { CircleLoading } from '../../../assets/Circle'
+import { useVehiculo } from '../../../hooks/useVehiculo'
 
-export default function TitleInfo ({ vehiculo, deleteVehiculo }) {
+export default function TitleInfo ({ id }) {
   const navigate = useNavigate()
+  const { vehiculo, deleteVehiculo } = useVehiculo(id)
   const [loading, setLoading] = useState(false)
 
   const handleDelete = async () => {

@@ -26,7 +26,6 @@ export function useEntradaSalida (id) {
     })
       .then((response) => response.json())
       .then((data) => {
-        localStorage.removeItem('idEntrada')
         putStatus(setStatusVehiculo)
       })
   }

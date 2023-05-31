@@ -8,7 +8,10 @@ import {
   Badge
 } from '@tremor/react'
 
-export default function TableVehiculo ({ loading, fechasES }) {
+import { useEntradaSalida } from '../../../hooks/useEntradaSalida'
+
+export default function TableVehiculo ({ id }) {
+  const { loading, fechasES } = useEntradaSalida(id)
   return (
     <>
       {
@@ -17,7 +20,6 @@ export default function TableVehiculo ({ loading, fechasES }) {
           : <Table>
             <TableHead>
               <TableRow>
-                <TableHeaderCell>ID vehiculo</TableHeaderCell>
                 <TableHeaderCell>Registro de entrada</TableHeaderCell>
                 <TableHeaderCell>Registro de salida</TableHeaderCell>
               </TableRow>
@@ -27,11 +29,6 @@ export default function TableVehiculo ({ loading, fechasES }) {
               {
                 fechasES.map((data) => (
                   <TableRow key={data.id}>
-                    <TableCell>
-                      <Badge color="emerald">
-                        {data.id}
-                      </Badge>
-                    </TableCell>
                     <TableCell>
                       <Badge color="emerald">
                         {data.fechaEntrada}

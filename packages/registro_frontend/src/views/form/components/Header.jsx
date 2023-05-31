@@ -4,7 +4,7 @@ import { IoIosArrowRoundBack } from 'react-icons/io'
 import { CircleLoading } from '../../../assets/Circle'
 import { Callout } from '@tremor/react'
 
-export default function HeaderForm ({ handleSubmit, success, msgError, loading }) {
+export default function HeaderForm ({ id, handleSubmit, success, msgError, loading }) {
   return (
     <>
       {
@@ -16,7 +16,7 @@ export default function HeaderForm ({ handleSubmit, success, msgError, loading }
         <Link to='/'>
           <IoIosArrowRoundBack className='text-5xl hover:scale-110 hover:cursor-pointer' />
         </Link>
-        <h2 className='font-semibold text-3xl'>Registro</h2>
+        <h2 className='font-semibold text-3xl'>{id ? 'Editar vehículo' : 'Registrar vehículo'}</h2>
         <form
           onSubmit={handleSubmit}
         >

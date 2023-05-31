@@ -12,15 +12,13 @@ export default function TableInfo ({ entrada, salida }) {
   const { entradas } = entrada
   const { salidas } = salida
   const data = entradas.map(entradaItem => {
-    const salidaItem = salidas.find(salidaItem => salidaItem.entradaId === entradaItem.id)
+    const salidaItem = salidas.find(salidaItem => salidaItem.transaccionId === entradaItem.transaccionId)
 
-    if (salidaItem !== undefined) {
-      console.log(salidaItem)
-      console.log(entradaItem)
+    if (salidaItem.fecha !== '') {
       const fechaE = new Date(Number(entradaItem.fecha))
-      const horaE = fechaE.toUTCString()
+      const horaE = fechaE.toLocaleString('es-MX', { hour12: true })
       const fechaS = new Date(Number(salidaItem.fecha))
-      const horaS = fechaS.toUTCString()
+      const horaS = fechaS.toLocaleString('es-MX', { hour12: true })
       return {
         id: entradaItem.id,
         fechaEntrada: horaE,
@@ -29,7 +27,7 @@ export default function TableInfo ({ entrada, salida }) {
       }
     } else {
       const fechaE = new Date(Number(entradaItem.fecha))
-      const horaE = fechaE.toUTCString()
+      const horaE = fechaE.toLocaleString('es-MX', { hour12: true })
 
       return {
         id: entradaItem.id,
